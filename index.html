@@ -38,7 +38,7 @@
       overflow: hidden;
     }
 
-    /* Top Navigation Bar */
+    /* Top Header Bar */
     header {
       background: #090e1a;
       border-bottom: 2px solid var(--accent-cyan);
@@ -95,7 +95,7 @@
       font-weight: 700;
     }
 
-    /* Workspace Split Layout */
+    /* Main Workspace Layout */
     .app-workspace {
       flex: 1;
       display: flex;
@@ -103,9 +103,9 @@
       overflow: hidden;
     }
 
-    /* Sidebar Navigation Panel */
+    /* Expanded Sidebar Panel */
     .dashboard {
-      width: 340px;
+      width: 340px; /* Increased width for comfortable text rendering */
       background: var(--panel-bg);
       border-right: 1px solid var(--panel-border);
       display: flex;
@@ -113,29 +113,29 @@
       z-index: 20;
     }
 
-    .sidebar-header {
-      padding: 14px 18px;
+    .sidebar-section-title {
+      padding: 12px 18px;
       background: #090e1a;
       border-bottom: 1px solid var(--panel-border);
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: var(--accent-cyan);
       letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
-    .content-list {
+    .sidebar-scroll-area {
       flex: 1;
       overflow-y: auto;
       padding: 16px;
     }
 
-    .content-list::-webkit-scrollbar { width: 5px; }
-    .content-list::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
+    .sidebar-scroll-area::-webkit-scrollbar { width: 5px; }
+    .sidebar-scroll-area::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
 
-    /* Article Cards */
-    .article-card {
+    /* Cards Styling */
+    .article-card, .contributor-card {
       background: var(--card-bg);
       border: 1px solid var(--panel-border);
       border-radius: 8px;
@@ -145,10 +145,36 @@
       transition: all 0.2s ease;
     }
 
-    .article-card:hover {
+    .article-card:hover, .contributor-card:hover {
       background: var(--card-hover);
       border-color: var(--accent-cyan);
       transform: translateX(4px);
+    }
+
+    .contributor-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .contributor-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent-cyan);
+    }
+
+    .contributor-info h5 {
+      margin: 0;
+      font-size: 0.88rem;
+      color: var(--text-main);
+    }
+
+    .contributor-info p {
+      margin: 2px 0 0;
+      font-size: 0.75rem;
+      color: var(--accent-yellow);
     }
 
     .badge {
@@ -164,7 +190,7 @@
     .badge-art { background: rgba(244, 63, 94, 0.2); color: #f43f5e; border: 1px solid #f43f5e; }
     .badge-research { background: rgba(0, 242, 254, 0.2); color: #00f2fe; border: 1px solid #00f2fe; }
 
-    /* Stage Canvas Workspace */
+    /* Wall Magazine Display Stage */
     .stage-container {
       flex: 1;
       display: flex;
@@ -180,10 +206,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px;
+      padding: 16px;
     }
 
-    /* Fixed Left Alignment and Centering Container */
     .canvas-container {
       position: relative;
       display: flex;
@@ -194,7 +219,7 @@
     }
 
     .board-img {
-      max-height: calc(100vh - 170px);
+      max-height: calc(100vh - 100px);
       max-width: 100%;
       object-fit: contain;
       display: block;
@@ -203,101 +228,7 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
     }
 
-    /* Bottom Student Team & Contributors Bar */
-    .credits-bar {
-      height: 72px;
-      background: #090e1a;
-      border-top: 1px solid var(--panel-border);
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      gap: 16px;
-      overflow-x: auto;
-    }
-
-    .credits-label {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--accent-yellow);
-      white-space: nowrap;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .credits-flex {
-      display: flex;
-      gap: 12px;
-    }
-
-    .credit-chip {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #141e33;
-      padding: 6px 14px;
-      border-radius: 20px;
-      border: 1px solid var(--panel-border);
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .credit-chip:hover {
-      border-color: var(--accent-cyan);
-      background: #1e2d4a;
-      transform: translateY(-2px);
-    }
-
-    .chip-img {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1px solid var(--accent-cyan);
-    }
-
-    .chip-text { font-size: 0.78rem; }
-
-    /* Section Overlays & Lens */
-    .section-overlay-layer {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 25;
-      display: none;
-    }
-
-    .article-overlay-box {
-      position: absolute;
-      border: 2px dashed var(--accent-cyan);
-      background: rgba(0, 242, 254, 0.12);
-      border-radius: 6px;
-      transform: translate(-50%, -50%);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 6px 10px;
-      cursor: pointer;
-      pointer-events: auto;
-      transition: all 0.2s;
-    }
-
-    .article-overlay-box:hover {
-      background: rgba(0, 242, 254, 0.25);
-      border-style: solid;
-      box-shadow: 0 0 15px var(--accent-cyan);
-    }
-
-    .overlay-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: #fff;
-      background: rgba(11, 17, 32, 0.88);
-      padding: 2px 6px;
-      border-radius: 3px;
-      width: max-content;
-    }
-
+    /* Magnifier Lens */
     .magnifier-lens {
       position: absolute;
       border: 2px solid var(--accent-cyan);
@@ -311,7 +242,7 @@
       box-shadow: 0 0 25px var(--accent-glow);
     }
 
-    /* Backdrop Blur */
+    /* Modal Backdrop & Dialogs */
     .modal-backdrop {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -324,15 +255,14 @@
       padding: 20px;
     }
 
-    /* Student Profile Card Modal */
     .profile-card-modal {
       background: #0f172a;
       border: 2px solid var(--accent-cyan);
       border-radius: 16px;
       width: 100%;
-      max-width: 480px;
+      max-width: 460px;
       padding: 24px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px var(--accent-glow);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
       position: relative;
     }
 
@@ -346,8 +276,8 @@
     }
 
     .profile-card-avatar {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid var(--accent-cyan);
@@ -355,9 +285,8 @@
 
     .profile-card-details h2 {
       margin: 0 0 4px;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-family: 'Outfit', sans-serif;
-      color: var(--text-main);
     }
 
     .profile-card-details .role-badge {
@@ -369,60 +298,25 @@
       border-radius: 12px;
       font-size: 0.72rem;
       font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .profile-card-details .dept {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .profile-body-section {
-      margin-bottom: 14px;
-    }
-
-    .profile-body-section h4 {
-      margin: 0 0 4px;
-      font-size: 0.78rem;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .profile-body-section p {
-      margin: 0;
-      font-size: 0.85rem;
-      line-height: 1.4;
-      color: var(--text-sub);
     }
 
     .modal-close-btn {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 16px; right: 16px;
       background: #182238;
       border: 1px solid var(--panel-border);
       color: var(--text-muted);
-      width: 30px;
-      height: 30px;
+      width: 30px; height: 30px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
-    .modal-close-btn:hover {
-      color: var(--accent-magenta);
-      border-color: var(--accent-magenta);
-    }
-
-    /* Article Reader Drawer */
     .reader-drawer {
       position: fixed;
-      bottom: 85px;
+      bottom: 24px;
       right: 24px;
       width: 380px;
       background: rgba(15, 23, 42, 0.95);
@@ -437,7 +331,7 @@
 </head>
 <body>
 
-  <!-- App Header -->
+  <!-- Application Header -->
   <header>
     <div class="header-title">
       <h1 id="magazineHeader">LOADING DIGITAL MAGAZINE...</h1>
@@ -451,62 +345,47 @@
     </div>
   </header>
 
-  <!-- Workspace Split -->
   <div class="app-workspace">
-    <!-- Sidebar: Articles & Board Sections -->
+    <!-- Sidebar Area -->
     <aside class="dashboard">
-      <div class="sidebar-header">📰 Board Sections & Articles</div>
-      <div class="content-list">
-        <div id="articleList"></div>
+      <div class="sidebar-scroll-area">
+        <!-- Articles Section -->
+        <div class="sidebar-section-title">📰 Board Articles</div>
+        <div id="articleList" style="margin-top: 12px;"></div>
+
+        <!-- Student Team & Contributors Section -->
+        <div class="sidebar-section-title" style="margin-top: 24px;">👥 Student Team & Contributors</div>
+        <div id="contributorList" style="margin-top: 12px;"></div>
       </div>
     </aside>
 
-    <!-- Center Canvas Stage -->
+    <!-- Stage Area -->
     <div class="stage-container">
       <main class="stage" id="stage">
         <div class="canvas-container" id="canvasContainer">
           <img id="boardImg" class="board-img" src="" alt="Wall Magazine Canvas">
-          <div id="overlayLayer" class="section-overlay-layer"></div>
         </div>
-
         <div id="lens" class="magnifier-lens"></div>
       </main>
-
-      <!-- Bottom Student Editorial Team & Contributors -->
-      <div class="credits-bar">
-        <div class="credits-label">Student Team & Contributors:</div>
-        <div class="credits-flex" id="creditsFlex"></div>
-      </div>
     </div>
   </div>
 
-  <!-- Student Profile Modal -->
+  <!-- Contributor Profile Modal -->
   <div class="modal-backdrop" id="studentModalBackdrop">
     <div class="profile-card-modal">
       <div class="modal-close-btn" onclick="closeStudentModal()">&times;</div>
-      
       <div class="profile-card-header">
         <img id="modalStudentAvatar" class="profile-card-avatar" src="" alt="Student Profile">
         <div class="profile-card-details">
           <h2 id="modalStudentName">Student Name</h2>
           <span id="modalStudentRole" class="role-badge">Lead Contributor</span>
-          <div id="modalStudentDept" class="dept">Department of Zoology</div>
         </div>
       </div>
-
-      <div class="profile-body-section">
-        <h4>About Contributor</h4>
-        <p id="modalStudentBio">Student biography and scientific interests...</p>
-      </div>
-
-      <div class="profile-body-section">
-        <h4>Wall Magazine Contribution</h4>
-        <p id="modalStudentWork" style="color:var(--accent-cyan); font-weight:600;">Contribution Title</p>
-      </div>
+      <p id="modalStudentBio" style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.4;"></p>
     </div>
   </div>
 
-  <!-- Reader Modal Drawer -->
+  <!-- Article Drawer Modal -->
   <div class="reader-drawer" id="readerDrawer">
     <div class="modal-close-btn" onclick="closeDrawer()">&times;</div>
     <h3 id="modalTitle" style="color:var(--accent-cyan); margin-top:0;">Article Title</h3>
@@ -524,7 +403,6 @@
     const container = document.getElementById('canvasContainer');
     const img = document.getElementById('boardImg');
     const lens = document.getElementById('lens');
-    const overlayLayer = document.getElementById('overlayLayer');
 
     async function initApp() {
       try {
@@ -551,8 +429,7 @@
       img.src = edition.imgSrc;
 
       renderArticles(edition.articles);
-      renderCreditsBar(edition.contributors || []);
-      renderOverlays(edition.articles);
+      renderContributors(edition.contributors || []);
     }
 
     function renderArticles(articles) {
@@ -571,51 +448,32 @@
       });
     }
 
-    function renderCreditsBar(contributors) {
-      const flex = document.getElementById('creditsFlex');
-      flex.innerHTML = "";
+    function renderContributors(contributors) {
+      const list = document.getElementById('contributorList');
+      list.innerHTML = "";
       contributors.forEach(c => {
-        const chip = document.createElement('div');
-        chip.className = "credit-chip";
-        chip.onclick = () => openStudentModal(c);
-        chip.innerHTML = `
-          <img class="chip-img" src="${c.photo}" alt="${c.name}" onerror="this.src='https://via.placeholder.com/28'">
-          <div class="chip-text">
-            <strong>${c.name}</strong> <span style="color:var(--text-muted);">(${c.role})</span>
+        const card = document.createElement('div');
+        card.className = "contributor-card";
+        card.onclick = () => openStudentModal(c);
+        card.innerHTML = `
+          <img class="contributor-avatar" src="${c.photo}" alt="${c.name}" onerror="this.src='https://via.placeholder.com/40'">
+          <div class="contributor-info">
+            <h5>${c.name}</h5>
+            <p>${c.role}</p>
           </div>
         `;
-        flex.appendChild(chip);
-      });
-    }
-
-    function renderOverlays(articles) {
-      overlayLayer.innerHTML = "";
-      articles.forEach(art => {
-        const box = document.createElement('div');
-        box.className = "article-overlay-box";
-        box.style.top = art.coords.top;
-        box.style.left = art.coords.left;
-        box.style.width = art.coords.width;
-        box.style.height = art.coords.height;
-        box.onclick = () => openArticle(art);
-        box.innerHTML = `
-          <span class="overlay-label">${art.category}</span>
-          <span class="overlay-label" style="color:var(--accent-cyan); font-size:0.65rem;">${art.title}</span>
-        `;
-        overlayLayer.appendChild(box);
+        list.appendChild(card);
       });
     }
 
     function openStudentModal(student) {
       document.getElementById('modalStudentName').innerText = student.name;
       document.getElementById('modalStudentRole').innerText = student.role;
-      document.getElementById('modalStudentDept').innerText = student.department || "Department of Zoology";
-      document.getElementById('modalStudentBio').innerText = student.bio || "Active editorial team contributor for the annual wall magazine edition.";
-      document.getElementById('modalStudentWork').innerText = student.work || "Editorial Management & Design";
+      document.getElementById('modalStudentBio').innerText = student.bio || "Key editorial team member contributing to the department wall magazine.";
       
       const avatar = document.getElementById('modalStudentAvatar');
       avatar.src = student.photo;
-      avatar.onerror = () => avatar.src = 'https://via.placeholder.com/80';
+      avatar.onerror = () => avatar.src = 'https://via.placeholder.com/70';
 
       document.getElementById('studentModalBackdrop').style.display = 'flex';
     }
@@ -650,8 +508,7 @@
     function toggleMode() {
       activeMode = activeMode === "pointer" ? "lens" : "pointer";
       const btn = document.getElementById('modeBtn');
-      overlayLayer.style.display = activeMode === "lens" ? "block" : "none";
-      btn.innerText = activeMode === "lens" ? "🔍 Mode: Lens & Overlays ON" : "🏹 Mode: Pointer Mode";
+      btn.innerText = activeMode === "lens" ? "🔍 Mode: Lens ON" : "🏹 Mode: Pointer Mode";
       btn.classList.toggle('active', activeMode === "lens");
       if (activeMode !== "lens") lens.style.display = 'none';
     }
