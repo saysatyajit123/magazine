@@ -11,7 +11,7 @@
           "role": "Lead Illustrator",
           "department": "B.Sc. Zoology, 5th Sem",
           "bio": "Passionate about ecological illustration, wildlife mapping, and scientific visual storytelling.",
-          "photo": "./images/students/1.jpg",
+          "photo": "./images/students/1.png",
           "work": "Global Species Distribution Map",
           "coords": {
             "top": "88%",
@@ -26,7 +26,7 @@
           "role": "Chief Researcher",
           "department": "B.Sc. Zoology, 5th Sem",
           "bio": "Specializes in phylogenetic analysis, comparative anatomy, and invertebrate research.",
-          "photo": "./images/students/2.jpg",
+          "photo": "./images/students/2.png",
           "work": "Animal Kingdom Evolutionary Tree",
           "coords": {
             "top": "88%",
@@ -41,7 +41,7 @@
           "role": "Content Lead",
           "department": "B.Sc. Zoology, 3rd Sem",
           "bio": "Focuses on agricultural entomology, pollinator conservation, and environmental journalism.",
-          "photo": "./images/students/3.jpg",
+          "photo": "./images/students/3.png",
           "work": "Importance of Insect Pollinators",
           "coords": {
             "top": "88%",
@@ -56,7 +56,7 @@
           "role": "Literary Editor",
           "department": "B.Sc. Zoology, 3rd Sem",
           "bio": "Combines creative literature with wildlife conservation advocacy and field reports.",
-          "photo": "./images/students/4.jpg",
+          "photo": "./images/students/4.png",
           "work": "Kaziranga Rhino Conservation Note",
           "coords": {
             "top": "88%",
