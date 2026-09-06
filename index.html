@@ -103,7 +103,7 @@
       overflow: hidden;
     }
 
-    /* Sidebar Panel (Increased Width for UI Cleanliness) */
+    /* Sidebar Panel */
     .dashboard {
       width: 320px;
       background: var(--panel-bg);
@@ -348,7 +348,6 @@
       padding-bottom: 16px;
     }
 
-    /* Modal Frame */
     .passport-photo-frame {
       position: relative;
       width: 140px;
@@ -591,7 +590,7 @@
 
       renderArticles(edition.articles || []);
       renderContributors(edition.contributors || edition.team || []);
-      renderOverlays(edition);
+      renderOverlays(edition.articles || []);
     }
 
     function renderArticles(articles) {
@@ -629,13 +628,10 @@
       });
     }
     
-    function renderOverlays(edition) {
+    function renderOverlays(articles) {
       overlayLayer.innerHTML = "";
     
-      // Filter and loop through articles ONLY (excluding team/contributors)
-      const topicItems = (edition.articles || []).map(a => ({ ...a, itemType: 'article' }));
-    
-      topicItems.forEach(item => {
+      articles.forEach(item => {
         if (item.coords) {
           const elem = document.createElement('div');
           elem.className = "hotspot";
