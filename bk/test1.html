@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Wall Magazine — Dynamic Archive Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --panel-bg: #0f172a;
+      --panel-border: #1e293b;
+      --card-bg: #1e293b;
+      --card-hover: #334155;
+      --accent-cyan: #00f2fe;
+      --accent-magenta: #f43f5e;
+      --accent-yellow: #fbbf24;
+      --accent-glow: rgba(0, 242, 254, 0.3);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-sub: #cbd5e1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Header Bar */
+    header {
+      background: #0b1120;
+      border-bottom: 2px solid var(--accent-cyan);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .header-title h1 {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      letter-spacing: 0.5px;
+    }
+
+    .header-title p {
+      margin: 2px 0 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .select-dropdown, .btn {
+      background: #182238;
+      border: 1px solid var(--panel-border);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .select-dropdown:focus, .btn:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .btn.active {
+      background: var(--accent-cyan);
+      color: #070b14;
+      border-color: var(--accent-cyan);
+      font-weight: 700;
+    }
+
+    /* Workspace Split Grid */
+    .app-workspace {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Sidebar Dashboard */
+    .dashboard {
+      width: 410px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--panel-border);
+      display: flex;
+      flex-direction: column;
+      z-index: 20;
+      box-shadow: 5px 0 25px rgba(0,0,0,0.6);
+    }
+
+    .dash-header {
+      padding: 16px 20px;
+      background: #090e1a;
+      border-bottom: 1px solid var(--panel-border);
+    }
+
+    .dash-header h3 {
+      font-family: 'Outfit', sans-serif;
+      margin: 0 0 4px;
+      font-size: 1.05rem;
+      color: var(--accent-cyan);
+    }
+
+    .dash-header p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .article-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .article-card {
+      background: var(--card-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .article-card:hover {
+      background: var(--card-hover);
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+
+    .article-card.active {
+      background: #1e2942;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .badge-art { background: rgba(244, 63, 94, 0.2); color: #f43f5e; border: 1px solid #f43f5e; }
+    .badge-research { background: rgba(0, 242, 254, 0.2); color: #00f2fe; border: 1px solid #00f2fe; }
+    .badge-essay { background: rgba(168, 85, 247, 0.2); color: #a855f7; border: 1px solid #a855f7; }
+    .badge-poem { background: rgba(251, 191, 36, 0.2); color: #fbbf24; border: 1px solid #fbbf24; }
+
+    .article-card h4 {
+      margin: 0 0 6px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .article-card p {
+      margin: 0 0 8px;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .article-meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Right Canvas Workspace */
+    .stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #03060d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .canvas-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .board-img {
+      max-width: 960px;
+      width: 68vw;
+      display: block;
+      border-radius: 8px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      border: 1px solid var(--panel-border);
+    }
+
+    /* Overlay Layers */
+    .section-overlay-layer {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 25;
+      display: none;
+    }
+
+    .article-overlay-box {
+      position: absolute;
+      border: 2px dashed var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.12);
+      border-radius: 6px;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 6px 10px;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+      transition: all 0.3s ease;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .article-overlay-box:hover {
+      background: rgba(0, 242, 254, 0.25);
+      border-style: solid;
+      box-shadow: 0 0 20px var(--accent-cyan);
+    }
+
+    .overlay-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+      background: rgba(11, 17, 32, 0.85);
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+      width: max-content;
+    }
+
+    /* Target Pins */
+    .target-pin {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: var(--accent-cyan);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 15px var(--accent-cyan);
+      opacity: 0;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .target-pin.active {
+      opacity: 1;
+      animation: pulseGlow 1.5s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.8); }
+      70% { box-shadow: 0 0 0 16px rgba(0, 242, 254, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+    }
+
+    /* SVG Layer */
+    .svg-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    /* Magnifier Lens */
+    .magnifier-lens {
+      position: absolute;
+      border: 2px solid var(--accent-cyan);
+      border-radius: 50%;
+      width: 220px;
+      height: 220px;
+      box-shadow: 0 0 30px var(--accent-glow), inset 0 0 15px rgba(0,0,0,0.7);
+      display: none;
+      pointer-events: none;
+      background-repeat: no-repeat;
+      z-index: 50;
+    }
+
+    /* Modal Drawer */
+    .reader-drawer {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 420px;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      display: none;
+      z-index: 100;
+    }
+
+    .reader-drawer h3 {
+      font-family: 'Outfit', sans-serif;
+      margin: 0 0 8px;
+      color: var(--accent-cyan);
+      font-size: 1.15rem;
+    }
+
+    .reader-drawer p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+
+    .close-btn {
+      float: right;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .close-btn:hover { color: var(--accent-magenta); }
+  </style>
+</head>
+<body>
+
+  <!-- Header Controls -->
+  <header>
+    <div class="header-title">
+      <h1 id="magazineHeader">LOADING SYSTEM ARCHIVE...</h1>
+      <p>Department of Zoology — Wall Magazine Digital System</p>
+    </div>
+
+    <div class="header-controls">
+      <select id="yearSelect" class="select-dropdown" onchange="loadMagazineEdition(this.value)">
+        <!-- Dynamically Populated from config.json -->
+      </select>
+
+      <button class="btn" id="modeBtn" onclick="toggleMode()">🔍 Mode: Lens & Overlays</button>
+      <button class="btn" onclick="closeDrawer()">🔄 Reset View</button>
+      <button class="btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="app-workspace">
+    <!-- Sidebar -->
+    <aside class="dashboard">
+      <div class="dash-header">
+        <h3>WALL MAGAZINE INDEX</h3>
+        <p>Click any item to point or reveal full transcriptions</p>
+      </div>
+
+      <div class="article-list" id="articleList">
+        <!-- Dynamic Cards -->
+      </div>
+    </aside>
+
+    <!-- Stage -->
+    <main class="stage" id="stage">
+      <div class="canvas-container" id="canvasContainer">
+        <img id="boardImg" class="board-img" src="" alt="Wall Magazine Canvas">
+
+        <div id="pinsContainer"></div>
+        <div id="overlayLayer" class="section-overlay-layer"></div>
+      </div>
+
+      <svg class="svg-overlay" id="svgOverlay">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#00f2fe" />
+          </marker>
+        </defs>
+        <path id="arrowPath" d="" stroke="#00f2fe" stroke-width="3" stroke-dasharray="6,4" fill="none" marker-end="url(#arrowhead)" />
+      </svg>
+
+      <div id="lens" class="magnifier-lens"></div>
+    </main>
+  </div>
+
+  <!-- Reader Drawer -->
+  <div class="reader-drawer" id="readerDrawer">
+    <span class="close-btn" onclick="closeDrawer()">&times;</span>
+    <h3 id="modalTitle">Article Title</h3>
+    <p id="modalBody">Transcribed reader text...</p>
+    <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">
+      <strong>Contributor:</strong> <span id="modalAuthor">Student Name</span>
+    </div>
+    <button class="btn active" style="width:100%; border:none;" onclick="readAloud()">🔊 Audio Narration</button>
+  </div>
+
+  <script>
+    let magazineData = null;
+    let activeEdition = "2026";
+    let activeMode = "pointer";
+    let currentSelectedPin = null;
+
+    const stage = document.getElementById('stage');
+    const container = document.getElementById('canvasContainer');
+    const img = document.getElementById('boardImg');
+    const lens = document.getElementById('lens');
+    const overlayLayer = document.getElementById('overlayLayer');
+
+    /* Fetch JSON Config Asynchronously */
+    async function initApp() {
+      try {
+        const response = await fetch('./config.json');
+        if (!response.ok) throw new Error("Could not load config.json");
+        magazineData = await response.json();
+
+        /* Populate Year Selector Dropdown */
+        const yearSelect = document.getElementById('yearSelect');
+        yearSelect.innerHTML = "";
+        
+        Object.keys(magazineData.editions).forEach(year => {
+          const opt = document.createElement('option');
+          opt.value = year;
+          opt.innerText = `${year} Edition`;
+          if (year === magazineData.defaultEdition) opt.selected = true;
+          yearSelect.appendChild(opt);
+        });
+
+        loadMagazineEdition(magazineData.defaultEdition);
+      } catch (err) {
+        console.error("Config Error:", err);
+        document.getElementById('magazineHeader').innerText = "ERROR LOADING CONFIG.JSON";
+      }
+    }
+
+    /* Load Edition Data from Configuration */
+    function loadMagazineEdition(year) {
+      if (!magazineData || !magazineData.editions[year]) return;
+
+      activeEdition = year;
+      const edition = magazineData.editions[year];
+      document.getElementById('magazineHeader').innerText = edition.header;
+      img.src = edition.imgSrc;
+
+      closeDrawer();
+
+      const listContainer = document.getElementById('articleList');
+      const pinsContainer = document.getElementById('pinsContainer');
+      overlayLayer.innerHTML = "";
+      listContainer.innerHTML = "";
+      pinsContainer.innerHTML = "";
+
+      edition.articles.forEach((art) => {
+        /* Sidebar Card */
+        const card = document.createElement('div');
+        card.className = "article-card";
+        card.onclick = () => selectArticle(art, card);
+
+        const badgeClass = art.type === 'art' ? 'badge-art' : (art.type === 'research' ? 'badge-research' : (art.type === 'poem' ? 'badge-poem' : 'badge-essay'));
+
+        card.innerHTML = `
+          <span class="badge ${badgeClass}">${art.category}</span>
+          <h4>${art.title}</h4>
+          <p>${art.summary}</p>
+          <div class="article-meta">
+            <span>By ${art.author}</span>
+            <span>Locate ➔</span>
+          </div>
+        `;
+        listContainer.appendChild(card);
+
+        /* Target Pins */
+        const pin = document.createElement('div');
+        pin.className = "target-pin";
+        pin.id = `pin-${art.id}`;
+        pin.style.top = art.coords.top;
+        pin.style.left = art.coords.left;
+        pin.onclick = () => selectArticle(art, card);
+        pinsContainer.appendChild(pin);
+
+        /* Section Overlay Box */
+        const box = document.createElement('div');
+        box.className = "article-overlay-box";
+        box.style.top = art.coords.top;
+        box.style.left = art.coords.left;
+        box.style.width = art.coords.width;
+        box.style.height = art.coords.height;
+        box.onclick = () => selectArticle(art, card);
+
+        box.innerHTML = `
+          <span class="overlay-label">${art.category}</span>
+          <span class="overlay-label" style="color:var(--accent-cyan); font-size:0.65rem;">${art.title}</span>
+        `;
+        overlayLayer.appendChild(box);
+      });
+    }
+
+    function toggleMode() {
+      activeMode = activeMode === "pointer" ? "lens" : "pointer";
+      const btn = document.getElementById('modeBtn');
+      
+      if (activeMode === "lens") {
+        btn.innerText = "🔍 Mode: Lens & Overlays ON";
+        btn.classList.add('active');
+        overlayLayer.style.display = 'block';
+        document.getElementById('arrowPath').setAttribute('d', '');
+      } else {
+        btn.innerText = "🏹 Mode: Arrow Pointer";
+        btn.classList.remove('active');
+        overlayLayer.style.display = 'none';
+        lens.style.display = 'none';
+      }
+    }
+
+    function selectArticle(art, cardEl) {
+      document.querySelectorAll('.article-card').forEach(c => c.classList.remove('active'));
+      cardEl.classList.add('active');
+
+      document.querySelectorAll('.target-pin').forEach(p => p.classList.remove('active'));
+      const pin = document.getElementById(`pin-${art.id}`);
+      if (pin) pin.classList.add('active');
+      currentSelectedPin = pin;
+
+      if (activeMode === "pointer" && pin) {
+        drawVectorPointer(cardEl, pin);
+      }
+
+      document.getElementById('modalTitle').innerText = art.title;
+      document.getElementById('modalBody').innerText = art.body;
+      document.getElementById('modalAuthor').innerText = art.author;
+      document.getElementById('readerDrawer').style.display = 'block';
+    }
+
+    function drawVectorPointer(cardEl, pinEl) {
+      const cardRect = cardEl.getBoundingClientRect();
+      const pinRect = pinEl.getBoundingClientRect();
+
+      const startX = cardRect.right;
+      const startY = cardRect.top + cardRect.height / 2;
+      const endX = pinRect.left;
+      const endY = pinRect.top + pinRect.height / 2;
+
+      const controlX = startX + (endX - startX) * 0.5;
+      const d = `M ${startX} ${startY} Q ${controlX} ${startY}, ${endX} ${endY}`;
+      document.getElementById('arrowPath').setAttribute('d', d);
+    }
+
+    stage.addEventListener('mousemove', (e) => {
+      if (activeMode !== "lens") return;
+
+      const stageRect = stage.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+
+      const x = e.clientX - stageRect.left;
+      const y = e.clientY - stageRect.top;
+
+      lens.style.display = 'block';
+      lens.style.left = (x - 110) + 'px';
+      lens.style.top = (y - 110) + 'px';
+
+      const zoom = 2.3;
+      const bgX = -((e.clientX - containerRect.left) * zoom - 110);
+      const bgY = -((e.clientY - containerRect.top) * zoom - 110);
+
+      lens.style.backgroundImage = `url('${img.src}')`;
+      lens.style.backgroundSize = `${containerRect.width * zoom}px ${containerRect.height * zoom}px`;
+      lens.style.backgroundPosition = `${bgX}px ${bgY}px`;
+    });
+
+    stage.addEventListener('mouseleave', () => lens.style.display = 'none');
+
+    function closeDrawer() {
+      document.getElementById('readerDrawer').style.display = 'none';
+      document.getElementById('arrowPath').setAttribute('d', '');
+      document.querySelectorAll('.target-pin').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.article-card').forEach(c => c.classList.remove('active'));
+      window.speechSynthesis.cancel();
+    }
+
+    function readAloud() {
+      window.speechSynthesis.cancel();
+      const text = document.getElementById('modalBody').innerText;
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      const activeCard = document.querySelector('.article-card.active');
+      if (activeCard && currentSelectedPin && activeMode === "pointer") {
+        drawVectorPointer(activeCard, currentSelectedPin);
+      }
+    });
+
+    /* App Start */
+    initApp();
+  </script>
+</body>
+</html>

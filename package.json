@@ -1,0 +1,25 @@
+{
+  "name": "magazine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "finder.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saysatyajit123/magazine.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/saysatyajit123/magazine/issues"
+  },
+  "homepage": "https://github.com/saysatyajit123/magazine#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "sharp": "^0.35.4"
+  }
+}

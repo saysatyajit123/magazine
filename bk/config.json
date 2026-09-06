@@ -1,0 +1,122 @@
+{
+  "defaultEdition": "2026",
+  "editions": {
+    "2026": {
+      "header": "GLOBAL BIODIVERSITY: THE WEB OF LIFE (2026)",
+      "imgSrc": "./images/wall_magazine_2026.png",
+      "articles": [
+        {
+          "id": "map",
+          "title": "Global Species Distribution Map",
+          "type": "art",
+          "category": "Artwork Section",
+          "author": "Rupam Das & Group",
+          "summary": "Hand-drawn map depicting global biodiversity hotspots, fauna corridors, and coral reefs.",
+          "body": "A handcrafted global biodiversity map displaying species distribution hotspots across terrestrial biomes and ocean sanctuaries. (হাতে অঁকা জৈৱবৈচিত্ৰ্যৰ মানচিত্ৰ - বিশ্বৰ বিভিন্ন প্ৰান্তৰ বিলুপ্তপ্ৰায় প্ৰাণী আৰু সামুদ্ৰিক পৰিস্থিতিতন্ত্ৰৰ বিস্তৃত চিত্ৰণ।)",
+          "coords": {
+            "top": "35%",
+            "left": "48%",
+            "width": "24%",
+            "height": "28%"
+          }
+        },
+        {
+          "id": "tree",
+          "title": "Animal Kingdom Evolutionary Tree",
+          "type": "research",
+          "category": "Scientific Diagram",
+          "author": "Ananya Baruah",
+          "summary": "Phylogenetic tree tracing structural relationships across non-chordates and chordates.",
+          "body": "Phylogenetic diagram tracing body symmetry, coelomic organization, and embryonic developments from lower invertebrates to chordates.",
+          "coords": {
+            "top": "75%",
+            "left": "20%",
+            "width": "20%",
+            "height": "24%"
+          }
+        },
+        {
+          "id": "pollinators",
+          "title": "Importance of Insect Pollinators",
+          "type": "essay",
+          "category": "Research Essay",
+          "author": "Pritam Gogoi",
+          "summary": "Ecological review on the impact of wild pollinators in sustaining agricultural yields.",
+          "body": "An empirical paper analyzing the essential ecosystem services contributed by wild bees, butterflies, and beetles in maintaining wild plant species.",
+          "coords": {
+            "top": "68%",
+            "left": "42%",
+            "width": "18%",
+            "height": "22%"
+          }
+        },
+        {
+          "id": "ocean",
+          "title": "Ocean Acidification & Marine Ecosystems",
+          "type": "research",
+          "category": "Environmental Report",
+          "author": "Zoology Department Team",
+          "summary": "Study examining carbon absorption in ocean waters and coral bleaching.",
+          "body": "Scientific analysis investigating marine pH levels, calcium carbonate depletion, and biodiversity loss in tropical coral reef ecosystems.",
+          "coords": {
+            "top": "68%",
+            "left": "58%",
+            "width": "18%",
+            "height": "22%"
+          }
+        },
+        {
+          "id": "rhino",
+          "title": "Kaziranga Rhino Conservation Note",
+          "type": "poem",
+          "category": "Conservation Note",
+          "author": "Bidisha Saikia",
+          "summary": "Literary write-up on the conservation journey of the One-Horned Rhinoceros.",
+          "body": "Poetic and factual feature highlighting habitat protection, anti-poaching measures, and grassland management in Kaziranga National Park.",
+          "coords": {
+            "top": "32%",
+            "left": "22%",
+            "width": "18%",
+            "height": "20%"
+          }
+        }
+      ]
+    },
+    "2024": {
+      "header": "SVEEP ELECTORAL AWARENESS CORNER (2024)",
+      "imgSrc": "./images/wall_magazine_2024.png",
+      "articles": [
+        {
+          "id": "indiaMap",
+          "title": "Electoral Unity Map of India",
+          "type": "art",
+          "category": "Civic Artwork",
+          "author": "SVEEP Student Cell",
+          "summary": "Central illustration promoting national voting rights and civic unity.",
+          "body": "Central wall magazine poster created for election awareness, symbolizing constitutional voter participation across Indian states.",
+          "coords": {
+            "top": "45%",
+            "left": "50%",
+            "width": "26%",
+            "height": "30%"
+          }
+        },
+        {
+          "id": "covidGuide",
+          "title": "Safe Polling Booth Guidelines",
+          "type": "essay",
+          "category": "Information Notice",
+          "author": "BDC Volunteer Team",
+          "summary": "Illustrated guidelines detailing safety measures during voting.",
+          "body": "Step-by-step voter health guidelines detailing sanitization practices, queue maintenance, and voter support facilities.",
+          "coords": {
+            "top": "70%",
+            "left": "20%",
+            "width": "22%",
+            "height": "24%"
+          }
+        }
+      ]
+    }
+  }
+}
