@@ -275,9 +275,6 @@
       cursor: pointer;
       pointer-events: auto;
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       z-index: 10;
     }
 
@@ -288,7 +285,11 @@
     }
 
     .hotspot-label {
-      background: rgba(7, 11, 20, 0.85);
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #070b14;
       color: var(--accent-cyan);
       font-size: 0.7rem;
       font-weight: 700;
@@ -297,6 +298,7 @@
       border: 1px solid var(--accent-cyan);
       white-space: nowrap;
       pointer-events: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     }
 
     .magnifier-lens {
@@ -626,16 +628,14 @@
         list.appendChild(card);
       });
     }
-
+    
     function renderOverlays(edition) {
       overlayLayer.innerHTML = "";
-      
-      const items = [
-        ...(edition.articles || []).map(a => ({ ...a, itemType: 'article' })),
-        ...(edition.contributors || []).map(c => ({ ...c, itemType: 'contributor' }))
-      ];
-
-      items.forEach(item => {
+    
+      // Filter and loop through articles ONLY (excluding team/contributors)
+      const topicItems = (edition.articles || []).map(a => ({ ...a, itemType: 'article' }));
+    
+      topicItems.forEach(item => {
         if (item.coords) {
           const elem = document.createElement('div');
           elem.className = "hotspot";
@@ -643,26 +643,22 @@
           elem.style.left = item.coords.left;
           elem.style.width = item.coords.width;
           elem.style.height = item.coords.height;
-
+    
           const label = document.createElement('span');
           label.className = "hotspot-label";
-          label.innerText = item.title || item.name;
+          label.innerText = item.title;
           elem.appendChild(label);
-
+    
           elem.onclick = (e) => {
             e.stopPropagation();
-            if (item.itemType === 'article') {
-              openArticle(item);
-            } else {
-              openStudentModal(item);
-            }
+            openArticle(item);
           };
-
+    
           overlayLayer.appendChild(elem);
         }
       });
     }
-
+    
     function openStudentModal(student) {
       const photoUrl = getPhotoUrl(student);
       
