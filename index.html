@@ -95,7 +95,7 @@
       font-weight: 700;
     }
 
-    /* Workspace */
+    /* Workspace Layout */
     .app-workspace {
       flex: 1;
       display: flex;
@@ -103,14 +103,15 @@
       overflow: hidden;
     }
 
-    /* Sidebar Panel */
+    /* Sidebar Panel (Increased Width for UI Cleanliness) */
     .dashboard {
-      width: 340px;
+      width: 320px;
       background: var(--panel-bg);
       border-right: 1px solid var(--panel-border);
       display: flex;
       flex-direction: column;
       z-index: 20;
+      flex-shrink: 0;
     }
 
     .sidebar-tabs {
@@ -182,7 +183,7 @@
       gap: 14px;
     }
 
-    /* Circular Sidebar Avatar */
+    /* Round Sidebar Profile Preview */
     .contributor-avatar {
       width: 48px;
       height: 48px;
@@ -196,13 +197,14 @@
 
     .contributor-info h5 {
       margin: 0;
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       color: var(--text-main);
+      line-height: 1.2;
     }
 
     .contributor-info p {
-      margin: 2px 0 0;
-      font-size: 0.75rem;
+      margin: 3px 0 0;
+      font-size: 0.76rem;
       color: var(--accent-yellow);
     }
 
@@ -218,19 +220,20 @@
 
     .badge-research { background: rgba(0, 242, 254, 0.2); color: #00f2fe; border: 1px solid #00f2fe; }
 
-    /* Main Stage */
+    /* Main Stage Area */
     .stage-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       position: relative;
       background: #03060d;
+      overflow: hidden;
     }
 
     .stage {
       flex: 1;
       position: relative;
-      overflow: hidden;
+      overflow: auto;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -245,7 +248,7 @@
     }
 
     .board-img {
-      max-height: calc(100vh - 100px);
+      max-height: calc(100vh - 80px);
       max-width: 100%;
       object-fit: contain;
       display: block;
@@ -254,7 +257,7 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
     }
 
-    /* RESTORED: Hotspot Overlay System */
+    /* Hotspot Overlays */
     .overlay-layer {
       position: absolute;
       top: 0;
@@ -275,6 +278,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 10;
     }
 
     .hotspot:hover {
@@ -286,10 +290,10 @@
     .hotspot-label {
       background: rgba(7, 11, 20, 0.85);
       color: var(--accent-cyan);
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 3px;
+      padding: 2px 8px;
+      border-radius: 4px;
       border: 1px solid var(--accent-cyan);
       white-space: nowrap;
       pointer-events: none;
@@ -321,7 +325,7 @@
       padding: 20px;
     }
 
-    /* Expanded Passport-Style Modal */
+    /* Profile Card Modal */
     .profile-card-modal {
       background: #0f172a;
       border: 2px solid var(--accent-cyan);
@@ -342,6 +346,7 @@
       padding-bottom: 16px;
     }
 
+    /* Modal Frame */
     .passport-photo-frame {
       position: relative;
       width: 140px;
@@ -432,58 +437,11 @@
       display: none;
       z-index: 100;
     }
-
-    /* Bottom Quick Contributor Bar */
-    .bottom-bar {
-      background: #090e1a;
-      border-top: 1px solid var(--panel-border);
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      overflow-x: auto;
-    }
-
-    .bottom-bar-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--accent-cyan);
-      white-space: nowrap;
-    }
-
-    .contributor-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--card-bg);
-      border: 1px solid var(--panel-border);
-      padding: 4px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-
-    .contributor-chip:hover {
-      border-color: var(--accent-cyan);
-      background: var(--card-hover);
-    }
-
-    .contributor-chip img {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .contributor-chip span {
-      font-size: 0.78rem;
-      color: var(--text-main);
-    }
   </style>
 </head>
 <body>
 
+  <!-- Header -->
   <header>
     <div class="header-title">
       <h1 id="magazineHeader">LOADING DIGITAL MAGAZINE...</h1>
@@ -498,6 +456,7 @@
   </header>
 
   <div class="app-workspace">
+    <!-- Sidebar -->
     <aside class="dashboard">
       <div class="sidebar-tabs">
         <button class="tab-btn active" id="tabArticlesBtn" onclick="switchSidebarTab('articles')">📰 Articles</button>
@@ -515,6 +474,7 @@
       </div>
     </aside>
 
+    <!-- Canvas Stage -->
     <div class="stage-container">
       <main class="stage" id="stage">
         <div class="canvas-container" id="canvasContainer">
@@ -523,14 +483,10 @@
         </div>
         <div id="lens" class="magnifier-lens"></div>
       </main>
-
-      <div class="bottom-bar">
-        <span class="bottom-bar-title">CONTRIBUTORS:</span>
-        <div id="bottomBarList" style="display: flex; gap: 10px;"></div>
-      </div>
     </div>
   </div>
 
+  <!-- Profile Modal -->
   <div class="modal-backdrop" id="studentModalBackdrop">
     <div class="profile-card-modal">
       <div class="modal-close-btn" onclick="closeStudentModal()">&times;</div>
@@ -555,6 +511,7 @@
     </div>
   </div>
 
+  <!-- Article Reader Drawer -->
   <div class="reader-drawer" id="readerDrawer">
     <div class="modal-close-btn" onclick="closeDrawer()">&times;</div>
     <h3 id="modalTitle" style="color:var(--accent-cyan); margin-top:0;">Article Title</h3>
@@ -633,7 +590,6 @@
       renderArticles(edition.articles || []);
       renderContributors(edition.contributors || edition.team || []);
       renderOverlays(edition);
-      renderBottomBar(edition.contributors || []);
     }
 
     function renderArticles(articles) {
@@ -671,7 +627,6 @@
       });
     }
 
-    /* RESTORED: Dynamic Overlay Rendering Engine */
     function renderOverlays(edition) {
       overlayLayer.innerHTML = "";
       
@@ -705,21 +660,6 @@
 
           overlayLayer.appendChild(elem);
         }
-      });
-    }
-
-    function renderBottomBar(contributors) {
-      const list = document.getElementById('bottomBarList');
-      list.innerHTML = "";
-      contributors.forEach(c => {
-        const chip = document.createElement('div');
-        chip.className = "contributor-chip";
-        chip.onclick = () => openStudentModal(c);
-        chip.innerHTML = `
-          <img src="${getPhotoUrl(c)}" onerror="this.src='https://via.placeholder.com/24?text=U'">
-          <span><strong>${c.name}</strong> (${c.role})</span>
-        `;
-        list.appendChild(chip);
       });
     }
 
