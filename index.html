@@ -182,15 +182,16 @@
       gap: 14px;
     }
 
-    /* Passport Style Avatar for Sidebar List */
+    /* Round Circle Profile Preview for Sidebar List */
     .contributor-avatar {
-      width: 45px;
-      height: 58px; /* Passport 3:4 aspect ratio */
-      border-radius: 4px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
       object-fit: cover;
-      border: 1px solid var(--accent-cyan);
+      border: 2px solid var(--accent-cyan);
       background: #090e1a;
       flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
     }
 
     .contributor-info h5 {
@@ -287,7 +288,7 @@
       border: 2px solid var(--accent-cyan);
       border-radius: 16px;
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       padding: 24px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 30px var(--accent-glow);
       position: relative;
@@ -302,16 +303,16 @@
       padding-bottom: 16px;
     }
 
-    /* Official Passport Frame (3:4 Ratio) */
+    /* Increased Width Rectangular Frame for Modal */
     .passport-photo-frame {
       position: relative;
-      width: 105px;
-      height: 140px;
-      border-radius: 6px;
+      width: 140px; /* Increased frame width */
+      height: 165px; /* Proportional height */
+      border-radius: 8px;
       border: 2px solid var(--accent-cyan);
-      padding: 3px;
+      padding: 4px;
       background: #090e1a;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
       flex-shrink: 0;
     }
 
@@ -319,13 +320,13 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 3px;
+      border-radius: 4px;
       display: block;
     }
 
     .profile-card-details {
       flex: 1;
-      padding-top: 4px;
+      padding-top: 2px;
     }
 
     .profile-card-details h2 {
@@ -350,6 +351,13 @@
     .profile-card-details .dept {
       font-size: 0.8rem;
       color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .profile-card-details .work-title {
+      font-size: 0.82rem;
+      color: var(--accent-cyan);
+      font-weight: 600;
     }
 
     .modal-close-btn {
@@ -437,18 +445,19 @@
       
       <div class="profile-card-header">
         <div class="passport-photo-frame">
-          <img id="modalStudentAvatar" class="profile-passport-photo" src="" alt="Student Passport Photo">
+          <img id="modalStudentAvatar" class="profile-passport-photo" src="" alt="Student Photo">
         </div>
 
         <div class="profile-card-details">
           <h2 id="modalStudentName">Student Name</h2>
           <span id="modalStudentRole" class="role-badge">Lead Contributor</span>
           <div id="modalStudentDept" class="dept">Department of Zoology</div>
+          <div id="modalStudentWork" class="work-title"></div>
         </div>
       </div>
 
-      <div style="margin-bottom: 12px;">
-        <h4 style="margin: 0 0 4px; font-size: 0.78rem; color: var(--accent-cyan); text-transform: uppercase;">About Contributor</h4>
+      <div>
+        <h4 style="margin: 0 0 6px; font-size: 0.78rem; color: var(--accent-cyan); text-transform: uppercase;">About Contributor</h4>
         <p id="modalStudentBio" style="font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; margin: 0;"></p>
       </div>
     </div>
@@ -472,21 +481,22 @@
     const img = document.getElementById('boardImg');
     const lens = document.getElementById('lens');
 
-    // Helper: Safely resolve image paths across common schema naming conventions
+    // Helper: Safely resolve relative paths from config.json
     function getPhotoUrl(person) {
-      if (!person) return 'https://via.placeholder.com/105x140?text=No+Photo';
+      if (!person) return 'https://via.placeholder.com/140x165?text=No+Photo';
       
-      const path = person.photo || person.img || person.image || person.avatar || person.profilePic || person.src;
+      let path = person.photo || person.img || person.image || person.avatar || person.src;
       
       if (!path) {
-        return 'https://via.placeholder.com/105x140?text=No+Photo';
+        return 'https://via.placeholder.com/140x165?text=No+Photo';
       }
-      
-      // Return absolute URLs as-is, otherwise prepend relative path format
-      if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
-        return path;
+
+      // Format URL cleanly if relative path is supplied
+      if (!path.startsWith('http://') && !path.startsWith('https://') && !path.startsWith('data:')) {
+        path = path.replace(/^(\.\/|\/)/, '');
+        return `./${path}`;
       }
-      return path.startsWith('./') || path.startsWith('/') ? path : `./${path}`;
+      return path;
     }
 
     async function initApp() {
@@ -530,10 +540,12 @@
     function loadMagazineEdition(year) {
       const edition = magazineData.editions[year];
       document.getElementById('magazineHeader').innerText = edition.header;
-      img.src = edition.imgSrc;
+      
+      const mainImgSrc = edition.imgSrc ? edition.imgSrc.replace(/^(\.\/|\/)/, './') : '';
+      img.src = mainImgSrc;
 
-      renderArticles(edition.articles);
-      renderContributors(edition.contributors || edition.team || edition.members || []);
+      renderArticles(edition.articles || []);
+      renderContributors(edition.contributors || edition.team || []);
     }
 
     function renderArticles(articles) {
@@ -544,7 +556,7 @@
         card.className = "article-card";
         card.onclick = () => openArticle(art);
         card.innerHTML = `
-          <span class="badge badge-research">${art.category || 'Article'}</span>
+          <span class="badge badge-research">${art.category || art.type || 'Article'}</span>
           <h4 style="margin:4px 0; font-size:0.9rem;">${art.title}</h4>
           <p style="font-size:0.78rem; color:var(--text-sub); margin:0;">By ${art.author || 'Contributor'}</p>
         `;
@@ -561,10 +573,10 @@
         card.className = "contributor-card";
         card.onclick = () => openStudentModal(c);
         card.innerHTML = `
-          <img class="contributor-avatar" src="${photoUrl}" alt="${c.name || 'Member'}" onerror="this.onerror=null; this.src='https://via.placeholder.com/105x140?text=Photo';">
+          <img class="contributor-avatar" src="${photoUrl}" alt="${c.name}" onerror="this.onerror=null; this.src='https://via.placeholder.com/48?text=User';">
           <div class="contributor-info">
-            <h5>${c.name || 'Student / Staff'}</h5>
-            <p>${c.role || 'Contributor'}</p>
+            <h5>${c.name}</h5>
+            <p>${c.role}</p>
           </div>
         `;
         list.appendChild(card);
@@ -577,11 +589,12 @@
       document.getElementById('modalStudentName').innerText = student.name || 'Student Name';
       document.getElementById('modalStudentRole').innerText = student.role || 'Contributor';
       document.getElementById('modalStudentDept').innerText = student.department || "Department of Zoology";
+      document.getElementById('modalStudentWork').innerText = student.work ? `Contribution: ${student.work}` : '';
       document.getElementById('modalStudentBio').innerText = student.bio || "Editorial team member contributing to the department wall magazine edition.";
       
       const avatar = document.getElementById('modalStudentAvatar');
       avatar.src = photoUrl;
-      avatar.onerror = () => { avatar.src = 'https://via.placeholder.com/105x140?text=Passport+Photo'; };
+      avatar.onerror = () => { avatar.src = 'https://via.placeholder.com/140x165?text=Photo'; };
 
       document.getElementById('studentModalBackdrop').style.display = 'flex';
     }
@@ -623,7 +636,7 @@
 
     function openArticle(art) {
       document.getElementById('modalTitle').innerText = art.title;
-      document.getElementById('modalBody').innerText = art.body;
+      document.getElementById('modalBody').innerText = art.body || art.summary;
       document.getElementById('modalAuthor').innerText = art.author || 'Contributor';
       document.getElementById('readerDrawer').style.display = 'block';
     }
