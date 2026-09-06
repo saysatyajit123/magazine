@@ -182,14 +182,15 @@
       gap: 14px;
     }
 
-    /* Passport Style Avatar for List Thumbnail */
+    /* Passport Style Avatar for Sidebar List */
     .contributor-avatar {
-      width: 42px;
-      height: 54px; /* 3:4 passport ratio */
+      width: 45px;
+      height: 58px; /* Passport 3:4 aspect ratio */
       border-radius: 4px;
       object-fit: cover;
       border: 1px solid var(--accent-cyan);
       background: #090e1a;
+      flex-shrink: 0;
     }
 
     .contributor-info h5 {
@@ -280,7 +281,7 @@
       padding: 20px;
     }
 
-    /* Student/Staff Profile Modal */
+    /* Student Profile Modal */
     .profile-card-modal {
       background: #0f172a;
       border: 2px solid var(--accent-cyan);
@@ -301,11 +302,11 @@
       padding-bottom: 16px;
     }
 
-    /* Official Passport-Size Image Frame Styling */
+    /* Official Passport Frame (3:4 Ratio) */
     .passport-photo-frame {
       position: relative;
       width: 105px;
-      height: 140px; /* 3:4 official passport dimension ratio */
+      height: 140px;
       border-radius: 6px;
       border: 2px solid var(--accent-cyan);
       padding: 3px;
@@ -471,6 +472,23 @@
     const img = document.getElementById('boardImg');
     const lens = document.getElementById('lens');
 
+    // Helper: Safely resolve image paths across common schema naming conventions
+    function getPhotoUrl(person) {
+      if (!person) return 'https://via.placeholder.com/105x140?text=No+Photo';
+      
+      const path = person.photo || person.img || person.image || person.avatar || person.profilePic || person.src;
+      
+      if (!path) {
+        return 'https://via.placeholder.com/105x140?text=No+Photo';
+      }
+      
+      // Return absolute URLs as-is, otherwise prepend relative path format
+      if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+        return path;
+      }
+      return path.startsWith('./') || path.startsWith('/') ? path : `./${path}`;
+    }
+
     async function initApp() {
       try {
         const response = await fetch('./config.json');
@@ -515,7 +533,7 @@
       img.src = edition.imgSrc;
 
       renderArticles(edition.articles);
-      renderContributors(edition.contributors || []);
+      renderContributors(edition.contributors || edition.team || edition.members || []);
     }
 
     function renderArticles(articles) {
@@ -526,9 +544,9 @@
         card.className = "article-card";
         card.onclick = () => openArticle(art);
         card.innerHTML = `
-          <span class="badge badge-research">${art.category}</span>
+          <span class="badge badge-research">${art.category || 'Article'}</span>
           <h4 style="margin:4px 0; font-size:0.9rem;">${art.title}</h4>
-          <p style="font-size:0.78rem; color:var(--text-sub); margin:0;">By ${art.author}</p>
+          <p style="font-size:0.78rem; color:var(--text-sub); margin:0;">By ${art.author || 'Contributor'}</p>
         `;
         list.appendChild(card);
       });
@@ -538,14 +556,15 @@
       const list = document.getElementById('contributorList');
       list.innerHTML = "";
       contributors.forEach(c => {
+        const photoUrl = getPhotoUrl(c);
         const card = document.createElement('div');
         card.className = "contributor-card";
         card.onclick = () => openStudentModal(c);
         card.innerHTML = `
-          <img class="contributor-avatar" src="${c.photo}" alt="${c.name}" onerror="this.src='https://via.placeholder.com/105x140?text=Photo'">
+          <img class="contributor-avatar" src="${photoUrl}" alt="${c.name || 'Member'}" onerror="this.onerror=null; this.src='https://via.placeholder.com/105x140?text=Photo';">
           <div class="contributor-info">
-            <h5>${c.name}</h5>
-            <p>${c.role}</p>
+            <h5>${c.name || 'Student / Staff'}</h5>
+            <p>${c.role || 'Contributor'}</p>
           </div>
         `;
         list.appendChild(card);
@@ -553,14 +572,16 @@
     }
 
     function openStudentModal(student) {
-      document.getElementById('modalStudentName').innerText = student.name;
-      document.getElementById('modalStudentRole').innerText = student.role;
+      const photoUrl = getPhotoUrl(student);
+      
+      document.getElementById('modalStudentName').innerText = student.name || 'Student Name';
+      document.getElementById('modalStudentRole').innerText = student.role || 'Contributor';
       document.getElementById('modalStudentDept').innerText = student.department || "Department of Zoology";
-      document.getElementById('modalStudentBio').innerText = student.bio || "Key editorial team member contributing to the department wall magazine.";
+      document.getElementById('modalStudentBio').innerText = student.bio || "Editorial team member contributing to the department wall magazine edition.";
       
       const avatar = document.getElementById('modalStudentAvatar');
-      avatar.src = student.photo;
-      avatar.onerror = () => avatar.src = 'https://via.placeholder.com/105x140?text=Passport+Photo';
+      avatar.src = photoUrl;
+      avatar.onerror = () => { avatar.src = 'https://via.placeholder.com/105x140?text=Passport+Photo'; };
 
       document.getElementById('studentModalBackdrop').style.display = 'flex';
     }
@@ -603,7 +624,7 @@
     function openArticle(art) {
       document.getElementById('modalTitle').innerText = art.title;
       document.getElementById('modalBody').innerText = art.body;
-      document.getElementById('modalAuthor').innerText = art.author;
+      document.getElementById('modalAuthor').innerText = art.author || 'Contributor';
       document.getElementById('readerDrawer').style.display = 'block';
     }
 
