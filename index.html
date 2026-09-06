@@ -182,7 +182,7 @@
       gap: 14px;
     }
 
-    /* Round Circle Profile Preview for Sidebar List */
+    /* Circular Sidebar Avatar */
     .contributor-avatar {
       width: 48px;
       height: 48px;
@@ -239,9 +239,7 @@
 
     .canvas-container {
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: inline-block;
       max-width: 100%;
       max-height: 100%;
     }
@@ -254,6 +252,47 @@
       border-radius: 8px;
       border: 1px solid var(--panel-border);
       box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+
+    /* RESTORED: Hotspot Overlay System */
+    .overlay-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .hotspot {
+      position: absolute;
+      border: 2px dashed var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.12);
+      border-radius: 6px;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hotspot:hover {
+      background: rgba(0, 242, 254, 0.35);
+      border-style: solid;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .hotspot-label {
+      background: rgba(7, 11, 20, 0.85);
+      color: var(--accent-cyan);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid var(--accent-cyan);
+      white-space: nowrap;
+      pointer-events: none;
     }
 
     .magnifier-lens {
@@ -282,7 +321,7 @@
       padding: 20px;
     }
 
-    /* Student Profile Modal */
+    /* Expanded Passport-Style Modal */
     .profile-card-modal {
       background: #0f172a;
       border: 2px solid var(--accent-cyan);
@@ -303,11 +342,10 @@
       padding-bottom: 16px;
     }
 
-    /* Increased Width Rectangular Frame for Modal */
     .passport-photo-frame {
       position: relative;
-      width: 140px; /* Increased frame width */
-      height: 165px; /* Proportional height */
+      width: 140px;
+      height: 165px;
       border-radius: 8px;
       border: 2px solid var(--accent-cyan);
       padding: 4px;
@@ -394,6 +432,54 @@
       display: none;
       z-index: 100;
     }
+
+    /* Bottom Quick Contributor Bar */
+    .bottom-bar {
+      background: #090e1a;
+      border-top: 1px solid var(--panel-border);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow-x: auto;
+    }
+
+    .bottom-bar-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      white-space: nowrap;
+    }
+
+    .contributor-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--panel-border);
+      padding: 4px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .contributor-chip:hover {
+      border-color: var(--accent-cyan);
+      background: var(--card-hover);
+    }
+
+    .contributor-chip img {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .contributor-chip span {
+      font-size: 0.78rem;
+      color: var(--text-main);
+    }
   </style>
 </head>
 <body>
@@ -433,9 +519,15 @@
       <main class="stage" id="stage">
         <div class="canvas-container" id="canvasContainer">
           <img id="boardImg" class="board-img" src="" alt="Wall Magazine Canvas">
+          <div id="overlayLayer" class="overlay-layer"></div>
         </div>
         <div id="lens" class="magnifier-lens"></div>
       </main>
+
+      <div class="bottom-bar">
+        <span class="bottom-bar-title">CONTRIBUTORS:</span>
+        <div id="bottomBarList" style="display: flex; gap: 10px;"></div>
+      </div>
     </div>
   </div>
 
@@ -479,19 +571,13 @@
     const stage = document.getElementById('stage');
     const container = document.getElementById('canvasContainer');
     const img = document.getElementById('boardImg');
+    const overlayLayer = document.getElementById('overlayLayer');
     const lens = document.getElementById('lens');
 
-    // Helper: Safely resolve relative paths from config.json
     function getPhotoUrl(person) {
       if (!person) return 'https://via.placeholder.com/140x165?text=No+Photo';
-      
       let path = person.photo || person.img || person.image || person.avatar || person.src;
-      
-      if (!path) {
-        return 'https://via.placeholder.com/140x165?text=No+Photo';
-      }
-
-      // Format URL cleanly if relative path is supplied
+      if (!path) return 'https://via.placeholder.com/140x165?text=No+Photo';
       if (!path.startsWith('http://') && !path.startsWith('https://') && !path.startsWith('data:')) {
         path = path.replace(/^(\.\/|\/)/, '');
         return `./${path}`;
@@ -546,6 +632,8 @@
 
       renderArticles(edition.articles || []);
       renderContributors(edition.contributors || edition.team || []);
+      renderOverlays(edition);
+      renderBottomBar(edition.contributors || []);
     }
 
     function renderArticles(articles) {
@@ -580,6 +668,58 @@
           </div>
         `;
         list.appendChild(card);
+      });
+    }
+
+    /* RESTORED: Dynamic Overlay Rendering Engine */
+    function renderOverlays(edition) {
+      overlayLayer.innerHTML = "";
+      
+      const items = [
+        ...(edition.articles || []).map(a => ({ ...a, itemType: 'article' })),
+        ...(edition.contributors || []).map(c => ({ ...c, itemType: 'contributor' }))
+      ];
+
+      items.forEach(item => {
+        if (item.coords) {
+          const elem = document.createElement('div');
+          elem.className = "hotspot";
+          elem.style.top = item.coords.top;
+          elem.style.left = item.coords.left;
+          elem.style.width = item.coords.width;
+          elem.style.height = item.coords.height;
+
+          const label = document.createElement('span');
+          label.className = "hotspot-label";
+          label.innerText = item.title || item.name;
+          elem.appendChild(label);
+
+          elem.onclick = (e) => {
+            e.stopPropagation();
+            if (item.itemType === 'article') {
+              openArticle(item);
+            } else {
+              openStudentModal(item);
+            }
+          };
+
+          overlayLayer.appendChild(elem);
+        }
+      });
+    }
+
+    function renderBottomBar(contributors) {
+      const list = document.getElementById('bottomBarList');
+      list.innerHTML = "";
+      contributors.forEach(c => {
+        const chip = document.createElement('div');
+        chip.className = "contributor-chip";
+        chip.onclick = () => openStudentModal(c);
+        chip.innerHTML = `
+          <img src="${getPhotoUrl(c)}" onerror="this.src='https://via.placeholder.com/24?text=U'">
+          <span><strong>${c.name}</strong> (${c.role})</span>
+        `;
+        list.appendChild(chip);
       });
     }
 
@@ -631,6 +771,7 @@
       const btn = document.getElementById('modeBtn');
       btn.innerText = activeMode === "lens" ? "🔍 Mode: Lens ON" : "🏹 Mode: Pointer Mode";
       btn.classList.toggle('active', activeMode === "lens");
+      overlayLayer.style.display = activeMode === "lens" ? "none" : "block";
       if (activeMode !== "lens") lens.style.display = 'none';
     }
 
