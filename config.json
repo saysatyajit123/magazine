@@ -9,29 +9,61 @@
           "id": "c1",
           "name": "Rupam Das",
           "role": "Lead Illustrator",
-          "photo": "./images/students/1.png",
-          "work": "Global Species Distribution Map"
+          "department": "B.Sc. Zoology, 5th Sem",
+          "bio": "Passionate about ecological illustration, wildlife mapping, and scientific visual storytelling.",
+          "photo": "./images/students/1.jpg",
+          "work": "Global Species Distribution Map",
+          "coords": {
+            "top": "88%",
+            "left": "15%",
+            "width": "16%",
+            "height": "8%"
+          }
         },
         {
           "id": "c2",
           "name": "Ananya Baruah",
-          "role": "Researcher",
-          "photo": "./images/students/2.png",
-          "work": "Animal Kingdom Evolutionary Tree"
+          "role": "Chief Researcher",
+          "department": "B.Sc. Zoology, 5th Sem",
+          "bio": "Specializes in phylogenetic analysis, comparative anatomy, and invertebrate research.",
+          "photo": "./images/students/2.jpg",
+          "work": "Animal Kingdom Evolutionary Tree",
+          "coords": {
+            "top": "88%",
+            "left": "35%",
+            "width": "16%",
+            "height": "8%"
+          }
         },
         {
           "id": "c3",
           "name": "Pritam Gogoi",
-          "role": "Content Writer",
-          "photo": "./images/students/3.png",
-          "work": "Importance of Insect Pollinators"
+          "role": "Content Lead",
+          "department": "B.Sc. Zoology, 3rd Sem",
+          "bio": "Focuses on agricultural entomology, pollinator conservation, and environmental journalism.",
+          "photo": "./images/students/3.jpg",
+          "work": "Importance of Insect Pollinators",
+          "coords": {
+            "top": "88%",
+            "left": "55%",
+            "width": "16%",
+            "height": "8%"
+          }
         },
         {
           "id": "c4",
           "name": "Bidisha Saikia",
-          "role": "Poet & Columnist",
-          "photo": "./images/students/4.png",
-          "work": "Kaziranga Rhino Conservation Note"
+          "role": "Literary Editor",
+          "department": "B.Sc. Zoology, 3rd Sem",
+          "bio": "Combines creative literature with wildlife conservation advocacy and field reports.",
+          "photo": "./images/students/4.jpg",
+          "work": "Kaziranga Rhino Conservation Note",
+          "coords": {
+            "top": "88%",
+            "left": "75%",
+            "width": "16%",
+            "height": "8%"
+          }
         }
       ],
       "articles": [
