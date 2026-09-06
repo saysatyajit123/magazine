@@ -105,7 +105,7 @@
 
     /* Expanded Sidebar Panel */
     .dashboard {
-      width: 340px; /* Increased width for comfortable text rendering */
+      width: 340px;
       background: var(--panel-bg);
       border-right: 1px solid var(--panel-border);
       display: flex;
@@ -113,16 +113,39 @@
       z-index: 20;
     }
 
-    .sidebar-section-title {
-      padding: 12px 18px;
+    /* Clickable Tab Navigation Header */
+    .sidebar-tabs {
+      display: flex;
       background: #090e1a;
       border-bottom: 1px solid var(--panel-border);
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 14px 10px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--accent-cyan);
-      letter-spacing: 0.5px;
+      font-size: 0.8rem;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-cyan);
+      border-bottom-color: var(--accent-cyan);
+      background: #0f172a;
     }
 
     .sidebar-scroll-area {
@@ -133,6 +156,14 @@
 
     .sidebar-scroll-area::-webkit-scrollbar { width: 5px; }
     .sidebar-scroll-area::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 3px; }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
 
     /* Cards Styling */
     .article-card, .contributor-card {
@@ -158,8 +189,8 @@
     }
 
     .contributor-avatar {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--accent-cyan);
@@ -190,7 +221,7 @@
     .badge-art { background: rgba(244, 63, 94, 0.2); color: #f43f5e; border: 1px solid #f43f5e; }
     .badge-research { background: rgba(0, 242, 254, 0.2); color: #00f2fe; border: 1px solid #00f2fe; }
 
-    /* Wall Magazine Display Stage */
+    /* Stage Canvas Viewport */
     .stage-container {
       flex: 1;
       display: flex;
@@ -242,7 +273,7 @@
       box-shadow: 0 0 25px var(--accent-glow);
     }
 
-    /* Modal Backdrop & Dialogs */
+    /* Modal Dialogs */
     .modal-backdrop {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -331,7 +362,7 @@
 </head>
 <body>
 
-  <!-- Application Header -->
+  <!-- Top Application Bar -->
   <header>
     <div class="header-title">
       <h1 id="magazineHeader">LOADING DIGITAL MAGAZINE...</h1>
@@ -346,20 +377,27 @@
   </header>
 
   <div class="app-workspace">
-    <!-- Sidebar Area -->
+    <!-- Sidebar Area with TAB Navigation -->
     <aside class="dashboard">
-      <div class="sidebar-scroll-area">
-        <!-- Articles Section -->
-        <div class="sidebar-section-title">📰 Board Articles</div>
-        <div id="articleList" style="margin-top: 12px;"></div>
+      <div class="sidebar-tabs">
+        <button class="tab-btn active" id="tabArticlesBtn" onclick="switchSidebarTab('articles')">📰 Articles</button>
+        <button class="tab-btn" id="tabContributorsBtn" onclick="switchSidebarTab('contributors')">👥 Team & Staff</button>
+      </div>
 
-        <!-- Student Team & Contributors Section -->
-        <div class="sidebar-section-title" style="margin-top: 24px;">👥 Student Team & Contributors</div>
-        <div id="contributorList" style="margin-top: 12px;"></div>
+      <div class="sidebar-scroll-area">
+        <!-- Articles Tab Content -->
+        <div id="articlesTab" class="tab-content active">
+          <div id="articleList"></div>
+        </div>
+
+        <!-- Student Team & Contributors Tab Content -->
+        <div id="contributorsTab" class="tab-content">
+          <div id="contributorList"></div>
+        </div>
       </div>
     </aside>
 
-    <!-- Stage Area -->
+    <!-- Canvas Stage -->
     <div class="stage-container">
       <main class="stage" id="stage">
         <div class="canvas-container" id="canvasContainer">
@@ -370,7 +408,7 @@
     </div>
   </div>
 
-  <!-- Contributor Profile Modal -->
+  <!-- Contributor Modal -->
   <div class="modal-backdrop" id="studentModalBackdrop">
     <div class="profile-card-modal">
       <div class="modal-close-btn" onclick="closeStudentModal()">&times;</div>
@@ -423,6 +461,25 @@
       }
     }
 
+    function switchSidebarTab(tabName) {
+      const articlesTab = document.getElementById('articlesTab');
+      const contributorsTab = document.getElementById('contributorsTab');
+      const tabArticlesBtn = document.getElementById('tabArticlesBtn');
+      const tabContributorsBtn = document.getElementById('tabContributorsBtn');
+
+      if (tabName === 'articles') {
+        articlesTab.classList.add('active');
+        contributorsTab.classList.remove('active');
+        tabArticlesBtn.classList.add('active');
+        tabContributorsBtn.classList.remove('active');
+      } else {
+        contributorsTab.classList.add('active');
+        articlesTab.classList.remove('active');
+        tabContributorsBtn.classList.add('active');
+        tabArticlesBtn.classList.remove('active');
+      }
+    }
+
     function loadMagazineEdition(year) {
       const edition = magazineData.editions[year];
       document.getElementById('magazineHeader').innerText = edition.header;
@@ -456,7 +513,7 @@
         card.className = "contributor-card";
         card.onclick = () => openStudentModal(c);
         card.innerHTML = `
-          <img class="contributor-avatar" src="${c.photo}" alt="${c.name}" onerror="this.src='https://via.placeholder.com/40'">
+          <img class="contributor-avatar" src="${c.photo}" alt="${c.name}" onerror="this.src='https://via.placeholder.com/42'">
           <div class="contributor-info">
             <h5>${c.name}</h5>
             <p>${c.role}</p>
