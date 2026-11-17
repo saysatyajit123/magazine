@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Wall Magazine Coordinate Finder</title>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    html, body { height: 100%; }
+
+    body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: #0f172a;
+      color: #f8fafc;
+      margin: 0;
+      height: 100vh;
+      height: 100dvh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    #stage {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      overflow: auto;
+      background: #020617;
+      display: flex;
+      padding: 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .img-wrapper {
+      position: relative;
+      display: inline-block;
+      margin: auto;
+      max-width: 100%;
+      user-select: none;
+      -webkit-user-select: none;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    #magazineImg {
+      max-width: 100%;
+      max-height: calc(100dvh - 40px);
+      display: block;
+      border: 1px solid #334155;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .selection-box {
+      position: absolute;
+      border: 2px dashed #00f2fe;
+      background: rgba(0, 242, 254, 0.2);
+      pointer-events: none;
+    }
+
+    .saved-box {
+      position: absolute;
+      border: 2px solid #fbbf24;
+      background: rgba(251, 191, 36, 0.12);
+      pointer-events: none;
+    }
+
+    .saved-box span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #fbbf24;
+      color: #0f172a;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 1px 4px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    #sidebar {
+      width: 420px;
+      flex-shrink: 0;
+      background: #1e293b;
+      border-left: 1px solid #334155;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    #sidebar h3 { margin: 0; }
+    #sidebar h4 { margin: 8px 0 0; }
+    #sidebar p { margin: 0 0 4px; font-size: 0.85rem; color: #94a3b8; }
+    label { font-size: 0.8rem; color: #cbd5e1; }
+
+    input, select, textarea, button {
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #00f2fe;
+      padding: 8px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      width: 100%;
+    }
+
+    textarea.field { resize: vertical; min-height: 56px; }
+
+    button {
+      background: #00f2fe;
+      color: #0f172a;
+      font-weight: bold;
+      cursor: pointer;
+      min-height: 40px;
+    }
+
+    button.secondary { background: #182238; color: #00f2fe; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; min-width: 0; }
+
+    #coordReadout {
+      font-size: 0.8rem;
+      color: #fbbf24;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 8px;
+      min-height: 36px;
+    }
+
+    #jsonOutput {
+      min-height: 160px;
+      resize: vertical;
+      font-size: 0.78rem;
+      color: #00f2fe;
+    }
+
+    a.back { text-decoration: none; display: block; }
+
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+
+      #stage {
+        flex: 0 0 auto;
+        height: 48dvh;
+        padding: 10px;
+        border-bottom: 1px solid #334155;
+      }
+
+      #magazineImg { max-height: calc(48dvh - 22px); }
+
+      #sidebar {
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        border-left: none;
+        padding: 14px;
+        padding-bottom: max(14px, env(safe-area-inset-bottom));
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="stage">
+    <div class="img-wrapper" id="wrapper">
+      <img id="magazineImg" src="/image" alt="Magazine" draggable="false">
+      <div id="box" class="selection-box" style="display:none;"></div>
+    </div>
+  </div>
+
+  <div id="sidebar">
+    <h3>COORDINATE GENERATOR</h3>
+    <p>Click &amp; drag (or touch &amp; drag) a box over an article or artwork.</p>
+
+    <div id="coordReadout">No selection yet.</div>
+
+    <label for="artId">Article ID</label>
+    <input type="text" id="artId" value="article_1" autocomplete="off">
+
+    <label for="artTitle">Title</label>
+    <input type="text" id="artTitle" value="Sample Article Title" autocomplete="off">
+
+    <div class="row">
+      <div>
+        <label for="artType">Type</label>
+        <select id="artType">
+          <option>research</option>
+          <option>diagram</option>
+          <option>illustration</option>
+          <option>reference</option>
+          <option>specimen</option>
+          <option>photography</option>
+          <option>art</option>
+        </select>
+      </div>
+      <div>
+        <label for="artCat">Category</label>
+        <input type="text" id="artCat" value="Research Essay" autocomplete="off">
+      </div>
+    </div>
+
+    <label for="artAuthor">Author</label>
+    <input type="text" id="artAuthor" value="Not specified" autocomplete="off">
+
+    <label for="artSummary">Summary</label>
+    <textarea class="field" id="artSummary"></textarea>
+
+    <label for="artBody">Body</label>
+    <textarea class="field" id="artBody"></textarea>
+
+    <button type="button" id="addBtn" disabled>+ Add to JSON Output</button>
+
+    <div class="row">
+      <button type="button" class="secondary" id="undoBtn">Undo Last</button>
+      <button type="button" class="secondary" id="clearBtn">Clear All</button>
+    </div>
+
+    <h4>Generated "articles" array for config.json:</h4>
+    <textarea id="jsonOutput" readonly></textarea>
+    <button type="button" id="copyBtn">Copy JSON</button>
+
+    <a class="back" href="/"><button type="button" class="secondary">Back to Magazine</button></a>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const $ = (id) => document.getElementById(id);
+      const wrapper = $('wrapper');
+      const box = $('box');
+      const readout = $('coordReadout');
+      const jsonOutput = $('jsonOutput');
+      const addBtn = $('addBtn');
+
+      let startX = 0;
+      let startY = 0;
+      let dragging = false;
+      let currentCoords = null;
+      const articlesList = [];
+
+      const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+      const pct = (value, total) => ((value / total) * 100).toFixed(2) + '%';
+
+      function pointInWrapper(e) {
+        const rect = wrapper.getBoundingClientRect();
+        return {
+          x: clamp(e.clientX - rect.left, 0, rect.width),
+          y: clamp(e.clientY - rect.top, 0, rect.height),
+          rect
+        };
+      }
+
+      wrapper.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        e.preventDefault();
+        wrapper.setPointerCapture(e.pointerId);
+
+        const p = pointInWrapper(e);
+        startX = p.x;
+        startY = p.y;
+        dragging = true;
+
+        box.style.left = startX + 'px';
+        box.style.top = startY + 'px';
+        box.style.width = '0px';
+        box.style.height = '0px';
+        box.style.display = 'block';
+      });
+
+      wrapper.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const p = pointInWrapper(e);
+        const left = Math.min(startX, p.x);
+        const top = Math.min(startY, p.y);
+        const width = Math.abs(p.x - startX);
+        const height = Math.abs(p.y - startY);
+
+        box.style.left = left + 'px';
+        box.style.top = top + 'px';
+        box.style.width = width + 'px';
+        box.style.height = height + 'px';
+
+        readout.textContent = `top: ${pct(top, p.rect.height)}  left: ${pct(left, p.rect.width)}  ` +
+                              `width: ${pct(width, p.rect.width)}  height: ${pct(height, p.rect.height)}`;
+      });
+
+      function endDrag(e) {
+        if (!dragging) return;
+        dragging = false;
+        if (wrapper.hasPointerCapture(e.pointerId)) wrapper.releasePointerCapture(e.pointerId);
+
+        const rect = wrapper.getBoundingClientRect();
+        const left = parseFloat(box.style.left) || 0;
+        const top = parseFloat(box.style.top) || 0;
+        const width = parseFloat(box.style.width) || 0;
+        const height = parseFloat(box.style.height) || 0;
+
+        if (width < 4 || height < 4) {
+          currentCoords = null;
+          box.style.display = 'none';
+          readout.textContent = 'Selection too small. Drag a larger area.';
+          addBtn.disabled = true;
+          return;
+        }
+
+        currentCoords = {
+          top: pct(top, rect.height),
+          left: pct(left, rect.width),
+          width: pct(width, rect.width),
+          height: pct(height, rect.height)
+        };
+        readout.textContent = `top: ${currentCoords.top}  left: ${currentCoords.left}  ` +
+                              `width: ${currentCoords.width}  height: ${currentCoords.height}`;
+        addBtn.disabled = false;
+      }
+
+      wrapper.addEventListener('pointerup', endDrag);
+      wrapper.addEventListener('pointercancel', endDrag);
+
+      function renderOutput() {
+        jsonOutput.value = articlesList.length ? JSON.stringify(articlesList, null, 2) : '';
+
+        wrapper.querySelectorAll('.saved-box').forEach((el) => el.remove());
+        articlesList.forEach((art) => {
+          const el = document.createElement('div');
+          el.className = 'saved-box';
+          el.style.top = art.coords.top;
+          el.style.left = art.coords.left;
+          el.style.width = art.coords.width;
+          el.style.height = art.coords.height;
+          const tag = document.createElement('span');
+          tag.textContent = art.id;
+          el.appendChild(tag);
+          wrapper.appendChild(el);
+        });
+      }
+
+      function nextId() {
+        const m = $('artId').value.match(/^(.*?)(\d+)$/);
+        return m ? m[1] + (parseInt(m[2], 10) + 1) : $('artId').value + '_2';
+      }
+
+      addBtn.addEventListener('click', () => {
+        if (!currentCoords) return;
+        const id = $('artId').value.trim() || 'article_' + (articlesList.length + 1);
+        const title = $('artTitle').value.trim();
+
+        articlesList.push({
+          id,
+          title,
+          type: $('artType').value,
+          category: $('artCat').value.trim(),
+          author: $('artAuthor').value.trim() || 'Not specified',
+          summary: $('artSummary').value.trim(),
+          body: $('artBody').value.trim(),
+          coords: currentCoords
+        });
+
+        renderOutput();
+
+        $('artId').value = nextId();
+        $('artTitle').value = '';
+        $('artSummary').value = '';
+        $('artBody').value = '';
+        currentCoords = null;
+        box.style.display = 'none';
+        addBtn.disabled = true;
+        readout.textContent = `Added "${id}". Select the next area.`;
+      });
+
+      $('undoBtn').addEventListener('click', () => { articlesList.pop(); renderOutput(); });
+
+      $('clearBtn').addEventListener('click', () => {
+        if (articlesList.length && !confirm('Remove all added articles?')) return;
+        articlesList.length = 0;
+        renderOutput();
+      });
+
+      $('copyBtn').addEventListener('click', async () => {
+        if (!jsonOutput.value) return;
+        const btn = $('copyBtn');
+        try {
+          await navigator.clipboard.writeText(jsonOutput.value);
+        } catch (err) {
+          jsonOutput.removeAttribute('readonly');
+          jsonOutput.select();
+          document.execCommand('copy');
+          jsonOutput.setAttribute('readonly', '');
+        }
+        btn.textContent = 'Copied';
+        setTimeout(() => { btn.textContent = 'Copy JSON'; }, 1500);
+      });
+    })();
+  </script>
+</body>
+</html>

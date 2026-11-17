@@ -44,9 +44,13 @@
       ],
       "articles": [
         {
-          "id": "article_1",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "genetics-evolution",
+          "title": "Genetics and Evolution",
+          "type": "research",
+          "category": "Genetics",
+          "author": "Not specified",
+          "summary": "An educational presentation explaining genetics, heredity, genetic variation, and evolutionary processes.",
+          "body": "Explores genetic inheritance, DNA-related concepts, variation, natural selection, and the relationship between genetics and biological evolution.",
           "coords": {
             "top": "19.08%",
             "left": "10.27%",
@@ -55,9 +59,13 @@
           }
         },
         {
-          "id": "article_2",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "evolution-concepts",
+          "title": "Evolutionary Concepts and Mechanisms",
+          "type": "research",
+          "category": "Evolution",
+          "author": "Not specified",
+          "summary": "A collection of educational notes and illustrations explaining evolutionary mechanisms and biological changes.",
+          "body": "Presents evolutionary concepts through explanatory text, biological illustrations, and diagrams showing genetic variation and evolutionary relationships.",
           "coords": {
             "top": "42.47%",
             "left": "10.36%",
@@ -66,9 +74,13 @@
           }
         },
         {
-          "id": "article_3",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "evolutionary-processes",
+          "title": "Evolutionary Processes and Natural Selection",
+          "type": "research",
+          "category": "Evolution",
+          "author": "Not specified",
+          "summary": "An educational panel discussing biological evolution and the processes responsible for changes in populations.",
+          "body": "Explains evolutionary processes, natural selection, adaptations, and the development of biological characteristics over generations.",
           "coords": {
             "top": "66.69%",
             "left": "10.36%",
@@ -77,9 +89,13 @@
           }
         },
         {
-          "id": "article_4",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "global-biodiversity-map",
+          "title": "Global Biodiversity Distribution Map",
+          "type": "research",
+          "category": "Scientific Diagram",
+          "author": "Not specified",
+          "summary": "A world map illustrating biodiversity across different geographical regions and ecosystems.",
+          "body": "Displays the geographical distribution of wildlife and biodiversity across continents, highlighting representative animals, plants, and ecological regions.",
           "coords": {
             "top": "21.54%",
             "left": "22.23%",
@@ -88,13 +104,13 @@
           }
         },
         {
-          "id": "tree",
-          "title": "Animal Kingdom Evolutionary Tree",
-          "type": "research",
-          "category": "Scientific Diagram",
-          "author": "Ananya Baruah",
-          "summary": "Phylogenetic tree tracing structural relationships across non-chordates and chordates.",
-          "body": "Phylogenetic diagram tracing body symmetry, coelomic organization, and embryonic developments.",
+          "id": "cell-structure",
+          "title": "Animal Cell Structure",
+          "type": "diagram",
+          "category": "Cell Biology",
+          "author": "Not specified",
+          "summary": "An illustrated biological diagram showing the internal structure of an animal cell.",
+          "body": "Presents the animal cell and its major organelles, including the nucleus, cytoplasm, cell membrane, and other cellular components.",
           "coords": {
             "top": "43.84%",
             "left": "22.23%",
@@ -103,13 +119,13 @@
           }
         },
         {
-          "id": "map",
-          "title": "Global Species Distribution Map",
-          "type": "art",
-          "category": "Artwork Section",
-          "author": "Rupam Das & Group",
-          "summary": "Hand-drawn map depicting global biodiversity hotspots, fauna corridors, and coral reefs.",
-          "body": "A handcrafted global biodiversity map displaying species distribution hotspots across terrestrial biomes and ocean sanctuaries.",
+          "id": "frog-anatomy",
+          "title": "Frog Anatomy and Internal Organ Systems",
+          "type": "diagram",
+          "category": "Comparative Anatomy",
+          "author": "Not specified",
+          "summary": "An anatomical illustration of a frog showing its body structure and internal organs.",
+          "body": "Illustrates the anatomical organization of a frog, including its external body features and major internal organ systems.",
           "coords": {
             "top": "26.46%",
             "left": "33.01%",
@@ -118,20 +134,13 @@
           }
         },
         {
-          "id": "article_7",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
-          "coords": {
-            "top": "65.60%",
-            "left": "34.01%",
-            "width": "5.94%",
-            "height": "8.76%"
-          }
-        },
-        {
-          "id": "article_8",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "animal-biodiversity",
+          "title": "Animal Biodiversity and Ecosystem Relationships",
+          "type": "illustration",
+          "category": "Ecology",
+          "author": "Not specified",
+          "summary": "A colourful illustration showing different animal groups living around a tree and aquatic ecosystem.",
+          "body": "Demonstrates animal diversity across terrestrial, arboreal, and aquatic habitats, highlighting the variety of organisms and their ecological relationships.",
           "coords": {
             "top": "61.90%",
             "left": "40.87%",
@@ -140,9 +149,13 @@
           }
         },
         {
-          "id": "article_9",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "animal-kingdom-phyla",
+          "title": "The Animal Kingdom Phyla",
+          "type": "research",
+          "category": "Animal Classification",
+          "author": "Not specified",
+          "summary": "A phylogenetic tree illustrating the classification and evolutionary relationships of different animal phyla.",
+          "body": "Presents the diversity of the animal kingdom through a branching evolutionary diagram, showing relationships among major animal groups and representative organisms.",
           "coords": {
             "top": "62.04%",
             "left": "52.65%",
@@ -151,9 +164,13 @@
           }
         },
         {
-          "id": "article_10",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "insect-illustration",
+          "title": "Insect Morphology Illustration",
+          "type": "diagram",
+          "category": "Entomology",
+          "author": "Not specified",
+          "summary": "A small biological illustration displaying an insect specimen and its visible body structures.",
+          "body": "An educational visual representing insect morphology and biological characteristics for zoological study.",
           "coords": {
             "top": "77.64%",
             "left": "33.28%",
@@ -162,9 +179,13 @@
           }
         },
         {
-          "id": "article_11",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "insect-pollinators",
+          "title": "The Importance of Insect Pollinators",
+          "type": "research",
+          "category": "Ecology and Pollination",
+          "author": "Not specified",
+          "summary": "An educational presentation explaining the ecological importance of insects in pollination.",
+          "body": "Discusses how insects contribute to pollination, plant reproduction, ecosystem stability, and biodiversity. Highlights the ecological importance of pollinating insects.",
           "coords": {
             "top": "77.23%",
             "left": "42.42%",
@@ -173,9 +194,13 @@
           }
         },
         {
-          "id": "article_12",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "ocean-acidification",
+          "title": "Ocean Acidification and Coral Reefs",
+          "type": "research",
+          "category": "Marine Biology",
+          "author": "Not specified",
+          "summary": "An educational panel explaining ocean acidification and its effects on coral reef ecosystems.",
+          "body": "Explores the effects of increasing ocean acidity on marine organisms, coral reef health, biodiversity, and the balance of marine ecosystems.",
           "coords": {
             "top": "77.23%",
             "left": "53.20%",
@@ -184,9 +209,13 @@
           }
         },
         {
-          "id": "article_13",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "endangered-species",
+          "title": "Endangered Species List",
+          "type": "reference",
+          "category": "Wildlife Conservation",
+          "author": "Not specified",
+          "summary": "A tabular reference displaying endangered animal species and their conservation-related information.",
+          "body": "Presents a structured list of animal species with classification and conservation information, highlighting wildlife threatened by habitat loss and other environmental pressures.",
           "coords": {
             "top": "19.62%",
             "left": "67.17%",
@@ -195,9 +224,13 @@
           }
         },
         {
-          "id": "article_14",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "conservation-efforts",
+          "title": "Conservation Efforts",
+          "type": "research",
+          "category": "Environmental Conservation",
+          "author": "Not specified",
+          "summary": "An educational presentation highlighting the importance of protecting biodiversity and endangered wildlife.",
+          "body": "Discusses conservation approaches, wildlife protection, habitat preservation, environmental awareness, and the importance of maintaining ecological balance.",
           "coords": {
             "top": "36.86%",
             "left": "67.26%",
@@ -206,9 +239,13 @@
           }
         },
         {
-          "id": "article_15",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "preserved-specimens",
+          "title": "Preserved Zoological Specimens",
+          "type": "specimen",
+          "category": "Zoological Collection",
+          "author": "Not specified",
+          "summary": "A collection of preserved biological specimens displayed in transparent containers.",
+          "body": "Displays preserved zoological specimens for practical observation and academic study of animal diversity, morphology, and classification.",
           "coords": {
             "top": "56.98%",
             "left": "65.53%",
@@ -217,9 +254,13 @@
           }
         },
         {
-          "id": "article_16",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "microscope-anatomy",
+          "title": "Microscope Structure and Components",
+          "type": "diagram",
+          "category": "Laboratory Equipment",
+          "author": "Not specified",
+          "summary": "A labelled scientific diagram illustrating the structure and major components of a microscope.",
+          "body": "Shows the structural components of a microscope, including the eyepiece, objective lenses, stage, focusing mechanisms, and supporting parts used for biological observation.",
           "coords": {
             "top": "78.87%",
             "left": "65.16%",
@@ -228,9 +269,13 @@
           }
         },
         {
-          "id": "article_17",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "skeletal-structures",
+          "title": "Comparative Skeletal Structures",
+          "type": "research",
+          "category": "Comparative Anatomy",
+          "author": "Not specified",
+          "summary": "An educational text panel concerning skeletal structures and anatomical characteristics.",
+          "body": "A zoological educational display discussing skeletal anatomy and structural characteristics of organisms. The exact printed heading is not clearly readable in the photograph.",
           "coords": {
             "top": "20.17%",
             "left": "77.13%",
@@ -239,9 +284,13 @@
           }
         },
         {
-          "id": "article_18",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "skull-and-teeth",
+          "title": "Comparative Skull and Teeth Specimens",
+          "type": "specimen",
+          "category": "Vertebrate Anatomy",
+          "author": "Not specified",
+          "summary": "A display of animal skulls and teeth illustrating differences in vertebrate anatomical structures.",
+          "body": "Shows comparative skull and dental specimens, providing visual examples of differences in skull shape and tooth morphology among animals.",
           "coords": {
             "top": "56.02%",
             "left": "80.23%",
@@ -250,9 +299,13 @@
           }
         },
         {
-          "id": "article_19",
-          "title": "Sample Article Title",
-          "category": "Research Essay",
+          "id": "wildlife-camera",
+          "title": "Wildlife Camera Monitoring",
+          "type": "photography",
+          "category": "Wildlife Research",
+          "author": "Not specified",
+          "summary": "A photograph showing a camera trap installed in a natural forest environment.",
+          "body": "Illustrates the use of camera-trap technology for wildlife observation, biodiversity monitoring, and studying animal activity in natural habitats.",
           "coords": {
             "top": "73.12%",
             "left": "80.60%",
@@ -261,6 +314,64 @@
           }
         }
       ]
+    },
+    "2025": {
+      "header": "GLOBAL BIODIVERSITY: THE WEB OF LIFE (2026)",
+      "imgSrc": "./images/wall_magazine_2026.png",
+      "contributors": [
+        {
+          "id": "c1",
+          "name": "Rupam Das",
+          "role": "Lead Illustrator",
+          "department": "B.Sc. Zoology, 5th Sem",
+          "bio": "Passionate about ecological illustration, wildlife mapping, and scientific visual storytelling.",
+          "photo": "./images/students/1.png",
+          "work": "Global Species Distribution Map"
+        },
+        {
+          "id": "c2",
+          "name": "Ananya Baruah",
+          "role": "Chief Researcher",
+          "department": "B.Sc. Zoology, 5th Sem",
+          "bio": "Specializes in phylogenetic analysis, comparative anatomy, and invertebrate research.",
+          "photo": "./images/students/2.png",
+          "work": "Animal Kingdom Evolutionary Tree"
+        },
+        {
+          "id": "c3",
+          "name": "Pritam Gogoi",
+          "role": "Content Lead",
+          "department": "B.Sc. Zoology, 3rd Sem",
+          "bio": "Focuses on agricultural entomology, pollinator conservation, and environmental journalism.",
+          "photo": "./images/students/3.png",
+          "work": "Importance of Insect Pollinators"
+        },
+        {
+          "id": "c4",
+          "name": "Bidisha Saikia",
+          "role": "Literary Editor",
+          "department": "B.Sc. Zoology, 3rd Sem",
+          "bio": "Combines creative literature with wildlife conservation advocacy and field reports.",
+          "photo": "./images/students/4.png",
+          "work": "Kaziranga Rhino Conservation Note"
+        }
+      ],
+      "articles": [
+        {
+          "id": "genetics-evolution",
+          "title": "Genetics and Evolution",
+          "type": "research",
+          "category": "Genetics",
+          "author": "Not specified",
+          "summary": "An educational presentation explaining genetics, heredity, genetic variation, and evolutionary processes.",
+          "body": "Explores genetic inheritance, DNA-related concepts, variation, natural selection, and the relationship between genetics and biological evolution.",
+          "coords": {
+            "top": "19.08%",
+            "left": "10.27%",
+            "width": "11.42%",
+            "height": "23.12%"
+          }
+        }      ]
     }
   }
 }
