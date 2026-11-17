@@ -2,7 +2,7 @@
   "name": "magazine",
   "version": "1.0.0",
   "description": "",
-  "main": "finder.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/saysatyajit123/magazine#readme",
   "dependencies": {
-    "express": "^5.2.1",
-    "sharp": "^0.35.4"
+    "express": "^5.2.1"
   }
 }
